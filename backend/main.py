@@ -7,25 +7,42 @@ from app.core.config import settings
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
+    description="""
+    AI Tutor for Instagram Creators API
+    Automatically generate personalized learning materials from Instagram engagement.
+    """,
+    version="1.0.0",
     openapi_url=f"{settings.API_V1_STR}/openapi.json"
 )
 
-# CORS (Cross-Origin Resource Sharing)
-# Set origins to the frontend URL in production
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins for development
-    # allow_origins=["http://localhost:3000", "YOUR_FRONTEND_URL"], # Production
+    allow_origins=["*"],  # Configure appropriately for production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-@app.get("/", tags=["Root"])
-async def read_root():
-    return {"message": f"Welcome to {settings.PROJECT_NAME}"}
+# Root endpoint
+@app.get("/")
+async def root():
+    return {
+        "name": settings.PROJECT_NAME,
+        "version": "1.0.0",
+        "docs_url": "/docs"
+    }
 
-# Include the API router (uncomment when ready)
+# Include API router
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
-# Placeholder for other app setup (e.g., database connection, background tasks) 
+# Startup and shutdown events
+@app.on_event("startup")
+async def startup_event():
+    # Initialize services
+    pass
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    # Cleanup
+    pass 

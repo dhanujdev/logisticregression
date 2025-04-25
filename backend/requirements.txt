@@ -1,14 +1,22 @@
-fastapi
-uvicorn[standard]
-python-dotenv
+fastapi>=0.68.0
+uvicorn[standard]>=0.15.0
+python-dotenv>=0.19.0
 # Placeholder for Instagram API library (if one exists or custom wrapper)
-langchain
+langchain>=0.1.0
 openai # Or other LLM provider like google-generativeai
 pdfkit # Or weasyprint
-sendgrid # Or mailgun
-sqlalchemy # For potential ORM use with Supabase, though direct supabase client might be used
-psycopg2-binary # Postgres driver
-supabase # Python client for Supabase
-celery # Or prefect - for background tasks
-redis # Often used with Celery
-requests # For making HTTP requests (e.g., to Instagram if needed) 
+sendgrid>=6.9.0
+sqlalchemy>=1.4.0
+psycopg2-binary>=2.9.0
+supabase>=2.0.0
+celery>=5.3.0
+redis>=4.5.0
+requests>=2.31.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+python-multipart>=0.0.5
+pillow>=10.0.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+google-generativeai>=0.3.0
+weasyprint>=60.1 

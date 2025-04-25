@@ -1,8 +1,44 @@
+from langchain.agents import initialize_agent, Tool
+from langchain.chat_models import ChatGoogleGenerativeAI
+from langchain.prompts import PromptTemplate
 from app.core.config import settings
-# Import necessary Langchain/LLM libraries
-# from langchain.llms import OpenAI
-# from langchain.chains import LLMChain
-# from langchain.prompts import PromptTemplate
+
+class AIService:
+    def __init__(self):
+        self.model = ChatGoogleGenerativeAI(
+            model="gemini-pro",
+            google_api_key=settings.GEMINI_API_KEY
+        )
+        
+        self.prompt_template = """
+        You are an expert instructor. Given the user idea and course context,
+        generate a detailed project plan with:
+        
+        {{"title": str,
+          "summary": str,
+          "milestones": [
+            {{"name": str,
+              "tasks": [str]
+            }}
+          ]
+        }}
+        
+        User Idea: {idea}
+        Course Context: {context}
+        """
+        
+        self.prompt = PromptTemplate(
+            template=self.prompt_template,
+            input_variables=["idea", "context"]
+        )
+    
+    async def generate_project(self, idea: str, context: str):
+        # Generate project using LangChain and Gemini
+        chain = self.prompt | self.model | JsonOutputParser()
+        return await chain.ainvoke({
+            "idea": idea,
+            "context": context
+        })
 
 # Example using OpenAI (replace with your chosen LLM/framework)
 # if settings.OPENAI_API_KEY:
